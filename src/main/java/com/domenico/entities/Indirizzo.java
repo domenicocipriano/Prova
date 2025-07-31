@@ -1,9 +1,14 @@
 package com.domenico.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +22,15 @@ public class Indirizzo {
 	private String cap;
 	private String provincia;
 	
+	
+	@OneToOne(mappedBy = "indirizzo")
+	private Persona persona;
+	
+	public Indirizzo() {
+	}
+	
+	
+
 	public Integer getId() {
 		return id;
 	}
@@ -48,9 +62,19 @@ public class Indirizzo {
 	public void setProvincia(String provincia) {
 		this.provincia = provincia;
 	}
+//	public Persona getPersona() {
+//		return persona;
+//	}
+//	public void setPersona(Persona persona) {
+//		this.persona = persona;
+//	}
+	@Override
 	public String toString() {
-		return "Indirizzo [id=" + id + ", via=" + via + ", citta=" + citta + ", cap=" + cap + ", provincia=" + provincia + "]";
+		return "Indirizzo [id=" + id + ", via=" + via + ", citta=" + citta + ", cap=" + cap + ", provincia=" + provincia
+				+ "]";
 	}
+	
+	
 	
 	
 

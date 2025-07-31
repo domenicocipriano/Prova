@@ -28,7 +28,7 @@ public class PersonaService {
 		persona.setCognome(cognome);
 		personaRepository.save(persona);
 	}
-	public List getAll() {
+	public List<Persona> getAll() {
 		return personaRepository.findAll();
 	}
 	public Persona getPersonaById(Long id) {

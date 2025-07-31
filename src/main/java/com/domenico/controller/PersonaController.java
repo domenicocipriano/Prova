@@ -67,6 +67,7 @@ public class PersonaController {
 			return ResponseEntity.badRequest().body("l'ordine deve contenere nome e cognome");
 		}
 		Persona createdPersona = personaService.creaPersona2(persona);
+		LOGGER.info("Created persona: " + createdPersona);
 		URI location = URI.create("/api/persona/" + createdPersona.getId());
 		//return ResponseEntity.created(location).body(createdPersona.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).header("location","/api/persona/" + createdPersona.getId())
@@ -95,23 +96,48 @@ public class PersonaController {
 			return ResponseEntity.ok(lista); // 200 OK with the list of personas
 		}
 	}
-	@GetMapping("/api/persona/{id}")
-	public ResponseEntity<String> getPersonaById(@PathVariable Long id) {
+	@PostMapping("/api/persona3")
+	public ResponseEntity<Persona>creaPersona3(@RequestBody Persona persona){
+		Persona createdPersona = personaService.creaPersona2(persona);
+		LOGGER.info("Created persona: " + createdPersona);
+		return ResponseEntity.ok(createdPersona); // 200 OK with the created persona
+	}
+//	@GetMapping("/api/persona")
+//	public List<Persona> getAllPersona() {
+//		List<Persona> lista = personaService.getAll();
+//		return lista;
+//	}
+//	@GetMapping("/api/persona/{id}")
+//	public ResponseEntity<String> getPersonaById(@PathVariable Long id) {
+//		LOGGER.info("Retrieving persona with ID: " + id);
+//		// Logic to retrieve a persona by ID
+//		// Assuming you have a method in PersonaService to get a persona by ID
+//		Persona persona = personaService.getPersonaById(id);
+//		if(persona == null) {
+//			LOGGER.warning("Persona with ID " + id + " not found.");
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//					.body("Persona non trovata!"); 
+//			
+//		}
+//		
+//		LOGGER.info("Retrieved persona: " + persona);
+//		//return ResponseEntity.ok("persona trovata: " + persona.getNome() + " " + persona.getCognome());
+//		return ResponseEntity.status(HttpStatus.OK)
+//				.body("Persona trovata: " + persona.getNome() + " " + persona.getCognome());
+//		
+//	}
+	@GetMapping("/api/persona2/{id}")
+	public Persona getPersonaById2(@PathVariable Long id) {
 		LOGGER.info("Retrieving persona with ID: " + id);
 		// Logic to retrieve a persona by ID
 		// Assuming you have a method in PersonaService to get a persona by ID
 		Persona persona = personaService.getPersonaById(id);
-		if(persona == null) {
+		if (persona == null) {
 			LOGGER.warning("Persona with ID " + id + " not found.");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("Persona non trovata!"); 
-			
+			return null; // or throw an exception
 		}
-		
 		LOGGER.info("Retrieved persona: " + persona);
-		//return ResponseEntity.ok("persona trovata: " + persona.getNome() + " " + persona.getCognome());
-		return ResponseEntity.status(HttpStatus.OK)
-				.body("Persona trovata: " + persona.getNome() + " " + persona.getCognome());
+		return persona;
 		
 	}
 	@DeleteMapping("/api/persona/{id}")
@@ -127,10 +153,10 @@ public class PersonaController {
 		return "Persona eliminata con successo!";
 		
 	}
-	@GetMapping("/api/persona2/{id}")
-	public Persona getPersonaById2(@PathVariable Integer id) {
-		return new Persona(id,"cipriano","domenico");
-	}
+//	@GetMapping("/api/persona2/{id}")
+//	public Persona getPersonaById2(@PathVariable Integer id) {
+//		return new Persona(id,"cipriano","domenico");
+//	}
 	
 	@GetMapping("/api/pers") // http://localhost:8080/api/pers?nome=Domenico&cognome=Cipriano
 	public String getPers(@RequestParam String nome,@RequestParam String cognome) {
