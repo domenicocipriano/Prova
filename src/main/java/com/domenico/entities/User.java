@@ -2,6 +2,8 @@ package com.domenico.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,8 +27,8 @@ public class User {
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ordine>ordini;
 	
-	
-	@OneToOne(mappedBy = "user")   //mappedBy indica che la relazione è gestita dalla classe Persona e 
+	@JsonBackReference // Utilizzato per evitare la serializzazione circolare tra User e Persona
+	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL)   //mappedBy indica che la relazione è gestita dalla classe Persona e 
 	// 'user' è il nome del campo nella classe Persona che fa riferimento a questa entità
 	private Persona persona;
 	
@@ -38,12 +40,12 @@ public class User {
 	public User() {
 		// Default constructor for JPA
 	}
-//	public Persona getPersona() {
-//		return persona;
-//	}
-//	public void setPersona(Persona persona) {
-//		this.persona = persona;
-//	}
+	public Persona getPersona() {
+		return persona;
+	}
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
 //	public List<Ordine> getOrdini() {
 //		return ordini;
 //	}

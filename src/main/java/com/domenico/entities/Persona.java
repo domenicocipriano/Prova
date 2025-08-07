@@ -1,6 +1,5 @@
 package com.domenico.entities;
 
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -14,29 +13,29 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 
 
+
+
 @Entity
 public class Persona {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	private String cognome;
 	
-	
-	@OneToOne(cascade = CascadeType.ALL)  //CascadeType.ALL indica che tutte le operazioni (persist, merge,
-	//remove, refresh, detach) saranno propagate all'entità Indirizzo
-	@JoinColumn(name = "indirizzo_id", referencedColumnName = "id")  //campo 'indirizzo_id' nella tabella Persona 
-	//che fa riferimento alla tabella Indirizzo
+	@OneToOne(cascade = CascadeType.ALL)  //CascadeType.ALL indica che tutte le operazioni (persist, merge,remove, refresh, detach) saranno propagate all'entità Indirizzo
+	@JoinColumn(name = "indirizzo_id", referencedColumnName = "id")  //campo 'indirizzo_id' nella tabella Persona che fa riferimento alla tabella Indirizzo
 	private Indirizzo indirizzo;	//referencedColumn indica che la colonna 'id' della tabella Indirizzo è quella a cui si fa riferimento
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
+	// Utilizzato per evitare la serializzazione circolare tra Persona e Carta
 	@ManyToMany
 	@JoinTable(name = "persona_carta",joinColumns = @JoinColumn(name = "persona_id"), 
-			   inverseJoinColumns = @JoinColumn(name = "carta_id")) //joinColumn indica la colonna che fa 
-	//riferimento alla tabella Persona, inverseJoinColumns indica la colonna che fa riferimento alla tabella Carte
+			   inverseJoinColumns = @JoinColumn(name = "carta_id")) //joinColumn indica la colonna che fa riferimento alla tabella Persona, inverseJoinColumns indica la colonna che fa riferimento alla tabella Carte
 	private Set<Carta> carte; // Associazioni con la classe Carte possono essere aggiunte se necessario
 	
 	public Persona() {

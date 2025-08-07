@@ -1,14 +1,13 @@
 package com.domenico.entities;
 
-import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
@@ -18,11 +17,11 @@ public class Carta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Long id;
 	private String numeroCarta;
-	
+	@JsonBackReference // Utilizzato per evitare la serializzazione circolare tra Carta e Persona
 	@ManyToMany(mappedBy = "carte") // mappedBy indica che la relazione è gestita dalla classe Persona
 	//@JoinTable(name = "persona_carta", joinColumns = @JoinColumn(name = "carta_id"), 
 	//		   inverseJoinColumns = @JoinColumn(name = "persona_id")) 
-	List<Persona>persone;// Associazioni con la classe Persona possono essere aggiunte se necessario
+	Set<Persona>persone;// Associazioni con la classe Persona possono essere aggiunte se necessario
 	
 	public Carta() {
 		// Default constructor for JPA
@@ -30,7 +29,7 @@ public class Carta {
 	public Carta(String numeroCarta) {
 		this.numeroCarta = numeroCarta;
 	}
-	public Carta(String numeroCarta, List<Persona> persone) {
+	public Carta(String numeroCarta, Set<Persona> persone) {
 		this(numeroCarta);
 		this.persone = persone;
 	}
@@ -46,15 +45,15 @@ public class Carta {
 	public void setNumeroCarta(String numeroCarta) {
 		this.numeroCarta = numeroCarta;
 	}
-//	public Set<Persona> getPersone() {
-//		return persone;
-//	}
+	public Set<Persona> getPersone() {
+		return persone;
+	}
 	public void aggiungiPersona(Persona persona) {
 		persone.add(persona);
 		persona.getCarte().add(this); // Assicurati che la relazione sia bidirezionale
 		
 	}
-	public void setPersone(List<Persona> persone) {
+	public void setPersone(Set<Persona> persone) {
 		this.persone = persone;
 	}
 	

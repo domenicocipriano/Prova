@@ -31,23 +31,25 @@ public class AssociazioneCartaService {
 		this.personaRepository = personaRepository;
 		this.categoriaRepository = categoriaRepository;
 	}
-	public void associaCartaPersonaNew(Long cartaId,Long personaId) {
-		Optional<Carta>carta = cartaRepository.findById(cartaId);
-		Optional<Persona> persona = personaRepository.findById(personaId);
-		if(carta.isPresent()&& persona.isPresent()) {
-			Carta cartaTrovata = carta.get();
-			Persona personaTrovata = persona.get();
-			Set<Carta> listaCarte = new HashSet<>();
-			listaCarte.add(cartaTrovata);
-			List<Persona> listaPersone = new ArrayList<>();
-			listaPersone.add(personaTrovata);
-			personaTrovata.setCarte(listaCarte);
-			cartaTrovata.setPersone(listaPersone);
-			cartaRepository.save(cartaTrovata);
-			personaRepository.save(personaTrovata);
-		}else {
-			throw new RuntimeException("Carta o Persona non trovata con gli ID forniti: Carta ID = " + cartaId + ", Persona ID = " + personaId);
-		}
+
+	public void associaCartaPersonaNew2(Long personaId, Long cartaId) {
+	    Optional<Carta> cartaOpt = cartaRepository.findById(cartaId);
+	    Optional<Persona> personaOpt = personaRepository.findById(personaId);
+
+	    if (cartaOpt.isPresent() && personaOpt.isPresent()) {
+	        Carta carta = cartaOpt.get();
+	        Persona persona = personaOpt.get();
+
+	        // Aggiunge la carta alla lista delle carte della persona (senza sovrascrivere)
+	        persona.getCarte().add(carta);
+	        // Aggiunge la persona alla lista delle persone della carta
+	        carta.getPersone().add(persona);
+
+	        // Salva solo uno dei due se la relazione è gestita correttamente da entrambi i lati
+	        personaRepository.save(persona); // o cartaRepository.save(carta)
+	    } else {
+	        throw new RuntimeException("Carta o Persona non trovata con gli ID forniti: Carta ID = " + cartaId + ", Persona ID = " + personaId);
+	    }
 	}
 	
 	

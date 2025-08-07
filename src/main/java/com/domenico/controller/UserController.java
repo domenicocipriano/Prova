@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.domenico.dto.UserDTO;
 import com.domenico.entities.User;
 import com.domenico.services.UserService;
 
@@ -68,6 +69,10 @@ public class UserController {
 	@GetMapping("/api/user2")
 	public List<User>getUser2(){
 		return userService.getAllUsers();
+	}
+	@GetMapping("/api/user3")
+	public List<UserDTO> getUser3(){
+		return userService.getAllUsers2();
 	}
 
 }

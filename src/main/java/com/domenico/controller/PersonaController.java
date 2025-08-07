@@ -7,16 +7,17 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.domenico.dto.PersonaDTO;
 import com.domenico.entities.Persona;
 import com.domenico.services.PersonaService;
 
@@ -28,7 +29,7 @@ public class PersonaController {
 	private PersonaService personaService;
 	private static final Logger LOGGER = Logger.getLogger(PersonaController.class.getName());
 	
-	@Autowired
+	
 	PersonaController(PersonaService personaService) {
 		// Constructor injection of PersonaService
 		this.personaService = personaService;
@@ -60,7 +61,7 @@ public class PersonaController {
 //		LOGGER.info("Created persona: " + persona);
 //		return ResponseEntity.ok("prodotto creato "+persona);  //accetta un oggetto da restituire come risposta
 //	}
-	@PostMapping("/api/persona")
+	@PostMapping(value = "/api/persona", consumes = {"application/json", "application/json;charset=UTF-8"})
 	public ResponseEntity<String>createPersona(@RequestBody Persona persona){
 		if(persona.getNome() == null || persona.getCognome() == null) {
 			LOGGER.warning("Nome or Cognome is null in the request body.");
@@ -73,6 +74,16 @@ public class PersonaController {
 		return ResponseEntity.status(HttpStatus.CREATED).header("location","/api/persona/" + createdPersona.getId())
 				.body("Persona creata con successo!!!");  //.header header personalizzato
 		
+	}
+	@PutMapping("/api/persona")
+	public ResponseEntity<Persona>update(@RequestBody Persona persona) {	
+		// Logic to update a persona
+		Persona updatedPersona = personaService.update(persona);
+		if (updatedPersona == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+		}
+		LOGGER.info("Updated persona: " + updatedPersona);
+		return ResponseEntity.ok(updatedPersona); // 200 OK with the updated persona
 	}
 	
 	@GetMapping("/getPersona")
@@ -131,19 +142,19 @@ public class PersonaController {
 		LOGGER.info("Retrieving persona with ID: " + id);
 		// Logic to retrieve a persona by ID
 		// Assuming you have a method in PersonaService to get a persona by ID
-		Persona persona = personaService.getPersonaById(id);
-		if (persona == null) {
+		Optional<Persona> persona = personaService.getPersonaById(id);
+		if (!persona.isPresent()) {
 			LOGGER.warning("Persona with ID " + id + " not found.");
 			return null; // or throw an exception
 		}
 		LOGGER.info("Retrieved persona: " + persona);
-		return persona;
+		return persona.get(); // Return the found persona
 		
 	}
 	@DeleteMapping("/api/persona/{id}")
 	public String deletePersona(@PathVariable Long id) {
-		Persona persona = personaService.getPersonaById(id);
-		if (persona == null) {
+		Optional<Persona> persona = personaService.getPersonaById(id);
+		if (!persona.isPresent()) {
 			LOGGER.warning("Persona with ID " + id + " not found.");
 			return "Persona non trovata!";
 		}
@@ -183,6 +194,10 @@ public class PersonaController {
 		}
 		LOGGER.info("Retrieved personas: " + persona);
 		return ResponseEntity.ok(persona); // 200 OK with the list of personas
+	}
+	@GetMapping("/api/persona3")
+	public List<PersonaDTO> getUser3(){
+		return personaService.getAllPersonaDTO();
 	}
 	
 	

@@ -1,10 +1,6 @@
 package com.domenico.entities;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,25 +12,35 @@ import jakarta.persistence.Table;
 public class Indirizzo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String via;
 	private String citta;
 	private String cap;
 	private String provincia;
 	
-	
-	@OneToOne(mappedBy = "indirizzo")
+	@OneToOne(mappedBy = "indirizzo") // mappedBy indica che la relazione è gestita dalla classe Persona
 	private Persona persona;
 	
 	public Indirizzo() {
 	}
-	
-	
+	public Persona getPersona() {
+		return persona;
+	}
+	public Indirizzo(String via, String citta, String cap, String provincia) {
+		this.via = via;
+		this.citta = citta;
+		this.cap = cap;
+		this.provincia = provincia;
+	}
+	public Indirizzo(String via, String citta, String cap, String provincia, Persona persona) {
+		this(via, citta, cap, provincia);
+		this.persona = persona;
+	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -62,12 +68,10 @@ public class Indirizzo {
 	public void setProvincia(String provincia) {
 		this.provincia = provincia;
 	}
-//	public Persona getPersona() {
-//		return persona;
-//	}
-//	public void setPersona(Persona persona) {
-//		this.persona = persona;
-//	}
+	
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
 	@Override
 	public String toString() {
 		return "Indirizzo [id=" + id + ", via=" + via + ", citta=" + citta + ", cap=" + cap + ", provincia=" + provincia
