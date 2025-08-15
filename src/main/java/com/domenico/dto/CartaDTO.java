@@ -5,12 +5,12 @@ import java.util.Set;
 public class CartaDTO {
 	private Long id;
 	private String numeroCarta;
-	Set<PersonaDTO> persone; // Uncomment if needed later
+	Set<PersonaDTOLight> persone; // Uncomment if needed later
 	
 	public CartaDTO() {
 		// Default constructor
 	}
-	public CartaDTO(Long id, String numeroCarta, Set<PersonaDTO> persone) {
+	public CartaDTO(Long id, String numeroCarta, Set<PersonaDTOLight> persone) {
 		this.id = id;
 		this.numeroCarta = numeroCarta;
 		this.persone = persone; // Uncomment if needed later

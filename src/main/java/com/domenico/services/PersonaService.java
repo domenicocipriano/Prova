@@ -64,7 +64,10 @@ public class PersonaService {
 	}
 	public List<PersonaDTO> getAllPersonaDTO() {
 		return personaRepository.findAll().stream()
-				.map(PersonaMapper::toDTO).collect(Collectors.toList());
+				.map(PersonaMapper::toDTO).collect(Collectors.toList()); // Mappa le entità Persona a DTO
+		//converte le entità Persona in DTO utilizzando il mapper
+		//Raccoglie tutti i PersonaDTO generati in una nuova lista (List<PersonaDTO>) e la restituisce
+		
 			
 		
 	}

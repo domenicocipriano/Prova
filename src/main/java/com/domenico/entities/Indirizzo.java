@@ -1,14 +1,15 @@
 package com.domenico.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "indirizzo")
 public class Indirizzo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +18,14 @@ public class Indirizzo {
 	private String citta;
 	private String cap;
 	private String provincia;
-	
+	@JsonBackReference // Indica che questa è la parte "non gestita" della relazione, utile per evitare loop infiniti durante la serializzazione JSON
 	@OneToOne(mappedBy = "indirizzo") // mappedBy indica che la relazione è gestita dalla classe Persona
 	private Persona persona;
 	
 	public Indirizzo() {
+		// Costruttore di default necessario per JPA
 	}
-	public Persona getPersona() {
-		return persona;
-	}
+	
 	public Indirizzo(String via, String citta, String cap, String provincia) {
 		this.via = via;
 		this.citta = citta;
@@ -35,6 +35,9 @@ public class Indirizzo {
 	public Indirizzo(String via, String citta, String cap, String provincia, Persona persona) {
 		this(via, citta, cap, provincia);
 		this.persona = persona;
+	}
+	public Persona getPersona() {
+		return persona;
 	}
 
 	public Long getId() {

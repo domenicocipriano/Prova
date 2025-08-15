@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,5 +69,17 @@ public class IndirizzoController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
+//	@PutMapping("/api/indirizzo/update/{id}")
+//	public ResponseEntity<Indirizzo> updateIndirizzo(@PathVariable Long id, @RequestBody Indirizzo indirizzo) {
+//		
+//		Indirizzo updatedIndirizzo = indirizzoService.updateIndirizzo(id, indirizzo);
+//		if (updatedIndirizzo != null) {
+//			LOGGER.info("Updated indirizzo: " + updatedIndirizzo);
+//			return ResponseEntity.ok(updatedIndirizzo);
+//		} else {
+//			
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		}
+//	}
 
 }

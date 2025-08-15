@@ -27,7 +27,7 @@ public class User {
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ordine>ordini;
 	
-	@JsonBackReference // Utilizzato per evitare la serializzazione circolare tra User e Persona
+	 @JsonBackReference // Indica che questa è la parte "non gestita" della relazione, utile per evitare loop infiniti durante la serializzazione JSON
 	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL)   //mappedBy indica che la relazione è gestita dalla classe Persona e 
 	// 'user' è il nome del campo nella classe Persona che fa riferimento a questa entità
 	private Persona persona;

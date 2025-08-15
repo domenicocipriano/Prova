@@ -2,6 +2,9 @@ package com.domenico.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,15 +27,17 @@ public class Persona {
 	private String nome;
 	private String cognome;
 	
+	@JsonManagedReference // Indica che questa è la parte "gestita" della relazione, utile per evitare loop infiniti durante la serializzazione JSON
 	@OneToOne(cascade = CascadeType.ALL)  //CascadeType.ALL indica che tutte le operazioni (persist, merge,remove, refresh, detach) saranno propagate all'entità Indirizzo
 	@JoinColumn(name = "indirizzo_id", referencedColumnName = "id")  //campo 'indirizzo_id' nella tabella Persona che fa riferimento alla tabella Indirizzo
 	private Indirizzo indirizzo;	//referencedColumn indica che la colonna 'id' della tabella Indirizzo è quella a cui si fa riferimento
-	
+	@JsonManagedReference // Indica che questa è la parte "gestita" della relazione, utile per evitare loop infiniti durante la serializzazione JSON
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
-	// Utilizzato per evitare la serializzazione circolare tra Persona e Carta
+	
+	@JsonManagedReference // Indica che questa è la parte "gestita" della relazione, utile per evitare loop infiniti durante la serializzazione JSON
 	@ManyToMany
 	@JoinTable(name = "persona_carta",joinColumns = @JoinColumn(name = "persona_id"), 
 			   inverseJoinColumns = @JoinColumn(name = "carta_id")) //joinColumn indica la colonna che fa riferimento alla tabella Persona, inverseJoinColumns indica la colonna che fa riferimento alla tabella Carte

@@ -2,6 +2,7 @@ package com.domenico.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.domenico.dto.CartaDTO;
 import com.domenico.entities.Carta;
 import com.domenico.services.CartaService;
 
@@ -35,7 +37,7 @@ public class CartaController {
 		}
 	}
 	@GetMapping("/api/carte")
-	public List<Carta> getAllCarte() {
+	public Set<CartaDTO> getAllCarte() {
 		return cartaService.getAllCarte();
 	}
 
